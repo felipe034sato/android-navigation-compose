@@ -7,10 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import carreiras.com.github.navigation_between_screens.screens.LoginScreen
 import carreiras.com.github.navigation_between_screens.ui.theme.Android5navigationbetweenscreensTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Android5navigationbetweenscreensTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
+                    LoginScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }

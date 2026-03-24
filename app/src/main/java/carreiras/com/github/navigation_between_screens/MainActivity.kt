@@ -23,47 +23,76 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             Android5navigationbetweenscreensTheme {
+
+                val navController = rememberNavController()
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val navController = rememberNavController()
 
                     NavHost(
                         navController = navController,
-                        startDestination = "login",
+                        startDestination = "login"
                     ) {
                         composable(route = "login") {
-                            LoginScreen(modifier = Modifier.padding(innerPadding), navController)
+                            LoginScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                navController
+                            )
                         }
                         composable(route = "menu") {
-                            MenuScreen(modifier = Modifier.padding(innerPadding), navController)
+                            MenuScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                navController
+                            )
                         }
                         composable(
                             route = "pedidos?cliente={cliente}",
-                            arguments = listOf(navArgument("cliente") {
-                                defaultValue = "Cliente Genérico"
-                            })
-                        ) {
+                            arguments = listOf(
+                                navArgument("cliente") {
+                                    type = NavType.StringType
+                                    defaultValue = "Cliente Genérico"
+                                    nullable = true
+                                }
+                            )
+                        ) { backStackEntry ->
+
+                            val cliente = backStackEntry
+                                .arguments
+                                ?.getString("cliente") ?: "Cliente Genérico"
+
                             PedidosScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 navController,
-                                it.arguments?.getString("cliente")
+                                cliente
                             )
                         }
                         composable(
                             route = "perfil/{nome}/{idade}",
                             arguments = listOf(
-                                navArgument("nome") { type = NavType.StringType },
-                                navArgument("idade") { type = NavType.IntType }
+                                navArgument("nome") {
+                                    type = NavType.StringType
+                                },
+                                navArgument("idade") {
+                                    type = NavType.IntType
+                                }
                             )
-                        ) {
-                            val nome: String? = it.arguments?.getString("nome", "Usuário Genérico")
-                            val idade: Int? = it.arguments?.getInt("idade", 0)
+                        ) { backStackEntry ->
+
+                            val nome = backStackEntry
+                                .arguments
+                                ?.getString("nome") ?: "Usuário"
+
+                            val idade = backStackEntry
+                                .arguments
+                                ?.getInt("idade") ?: 0
+
                             PerfilScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 navController,
-                                nome!!,
-                                idade!!
+                                nome,
+                                idade
                             )
                         }
                     }
